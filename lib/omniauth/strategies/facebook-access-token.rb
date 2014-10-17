@@ -1,4 +1,5 @@
 require 'oauth2'
+require 'omniauth'
 
 module OmniAuth
   module Strategies
@@ -14,8 +15,7 @@ module OmniAuth
 
       option :client_options, {
         :site => 'https://graph.facebook.com',
-        :token_url => '/oauth/access_token',
-        :ssl => { :version => "SSLv3" }
+        :token_url => '/oauth/access_token'
       }
 
       option :access_token_options, {
@@ -62,7 +62,7 @@ module OmniAuth
       def raw_info
         @raw_info ||= access_token.get('/me', info_options).parsed || {}
       end
-      
+
       def info_options
         options[:info_fields] ? {:params => {:fields => options[:info_fields]}} : {}
       end
@@ -123,7 +123,7 @@ module OmniAuth
         hash = request.params.slice("access_token", "expires_at", "expires_in", "refresh_token")
         hash.update(options.access_token_options)
         ::OAuth2::AccessToken.from_hash(
-          client, 
+          client,
           hash
         )
       end
@@ -148,7 +148,6 @@ module OmniAuth
 
         url.to_s
       end
-
     end
   end
 end
